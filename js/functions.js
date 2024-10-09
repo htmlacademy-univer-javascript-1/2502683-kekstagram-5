@@ -13,7 +13,7 @@ function isPalindrome(string) {
     return normalizedString === normalizedString.split('').reverse().join('');
   }
 
-function имяФункции(inputData) {
+function numberWay(inputData) {
     if (typeof inputData === 'number') {
         inputData = Math.abs(inputData).toString();
     }
