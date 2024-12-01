@@ -56,3 +56,4 @@ const onEscKeyPress = (evt) => {
 closeButton.addEventListener('click', closeFullscreen);
 
 export { openFullscreen };
+//test

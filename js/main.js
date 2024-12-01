@@ -5,3 +5,4 @@ const photoData = generatePhotoData();
 console.log(photoData);
 
 renderThumbnails();
+//test
