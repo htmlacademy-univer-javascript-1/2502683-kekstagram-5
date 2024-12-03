@@ -1,6 +1,7 @@
 import { generatePhotoData } from './photos.js';
 import { openFullscreen } from './fullscreen.js';
 
+
 const renderThumbnails = () => {
   const photos = generatePhotoData();
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
