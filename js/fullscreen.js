@@ -1,5 +1,4 @@
 const COMMENTS_PER_PAGE = 5;
-
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
@@ -20,6 +19,19 @@ const renderComments = () => {
   const commentsToShow = currentComments.slice(start, end);
 
   commentsToShow.forEach((comment) => {
+const closeButton = bigPicture.querySelector('.big-picture__cancel');
+const commentCountBlock = bigPicture.querySelector('.social__comment-count');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
+
+const openFullscreen = (photoData) => {
+  bigPictureImg.src = photoData.url;
+  likesCount.textContent = photoData.likes;
+  commentsCount.textContent = photoData.comments.length;
+  socialCaption.textContent = photoData.description;
+
+  socialComments.innerHTML = '';
+  
+  photoData.comments.forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
     commentElement.innerHTML = `
@@ -59,6 +71,8 @@ const openFullscreen = (photoData) => {
   commentsLoader.classList.remove('hidden');
 
   commentsLoader.addEventListener('click', renderComments);
+  commentCountBlock.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
 
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -70,6 +84,7 @@ const closeFullscreen = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyPress);
+
 
   commentsLoader.removeEventListener('click', renderComments);
 };
@@ -84,3 +99,4 @@ const onEscKeyPress = (evt) => {
 closeButton.addEventListener('click', closeFullscreen);
 
 export { openFullscreen };
+//test
