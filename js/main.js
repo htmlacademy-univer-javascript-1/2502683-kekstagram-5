@@ -1,15 +1,34 @@
 import { generatePhotoData } from './photos.js';
 import { renderThumbnails } from './thumbnails.js';
-import { renderThumbnails } from './render-thumbnails.js'
+import './form.js';
+import { fetchPhotos } from './api.js';
 
-import { renderThumbnails } from './thumbnails.js';
+const showErrorMessage = (message, duration = 5000) => {
+  const errorContainer = document.createElement('div');
+  errorContainer.style = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background-color: red;
+    color: white;
+    text-align: center;
+  `;
+  errorContainer.textContent = message;
 
-import { renderThumbnails } from './render-thumbnails.js'
+  document.body.appendChild(errorContainer);
 
+  setTimeout(() => {
+    errorContainer.remove();
+  }, duration);
+};
 
-const photoData = generatePhotoData();
-console.log(photoData);
-
-renderThumbnails();
-
-renderThumbnails();
+fetchPhotos()
+  .then(renderThumbnails)
+  .catch(() => {
+    showErrorMessage('Не удалось загрузить фотографии. Используем тестовые данные.');
+    const photoData = generatePhotoData();
+    renderThumbnails(photoData);
+  });
+//module11-task1
