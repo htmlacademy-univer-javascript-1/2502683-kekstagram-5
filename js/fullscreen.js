@@ -85,6 +85,7 @@ const closeFullscreen = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyPress);
+
   commentsLoader.removeEventListener('click', renderComments);
 };
 

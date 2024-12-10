@@ -24,4 +24,3 @@ const renderThumbnails = () => {
 };
 
 export { renderThumbnails };
-export { renderThumbnails };
