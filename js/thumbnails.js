@@ -18,12 +18,9 @@ const renderThumbnails = () => {
     pictureElement.addEventListener('click', () => {
       openFullscreen(photo);
     });
-
     fragment.appendChild(pictureElement);
   });
-
   picturesContainer.appendChild(fragment);
 };
-
 
 export { renderThumbnails };

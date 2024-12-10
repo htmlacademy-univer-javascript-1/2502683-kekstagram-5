@@ -71,6 +71,7 @@ const openFullscreen = (photoData) => {
   commentsLoader.classList.remove('hidden');
 
   commentsLoader.addEventListener('click', renderComments);
+
   commentCountBlock.classList.add('hidden');
   commentsLoader.classList.add('hidden');
 
@@ -85,7 +86,6 @@ const closeFullscreen = () => {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyPress);
 
-
   commentsLoader.removeEventListener('click', renderComments);
 };
 
@@ -98,5 +98,6 @@ const onEscKeyPress = (evt) => {
 
 closeButton.addEventListener('click', closeFullscreen);
 
+export { openFullscreen };
 export { openFullscreen };
 //test
