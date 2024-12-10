@@ -1,9 +1,6 @@
-import { generatePhotoData } from './photos.js';
 import { openFullscreen } from './fullscreen.js';
 
-
-const renderThumbnails = () => {
-  const photos = generatePhotoData();
+const renderThumbnails = (photos) => {
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesContainer = document.querySelector('.pictures');
   const fragment = document.createDocumentFragment();
@@ -24,6 +21,5 @@ const renderThumbnails = () => {
 
   picturesContainer.appendChild(fragment);
 };
-
 
 export { renderThumbnails };
