@@ -31,4 +31,5 @@ fetchPhotos()
     const photoData = generatePhotoData();
     renderThumbnails(photoData);
   });
-//module11-task1
+
+renderThumbnails(photoData);

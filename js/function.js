@@ -20,3 +20,4 @@ function parseTime(time) {
   console.log(isMeetingInWorkHours('8:00', '17:30', '08:00', 900)); // false
   
   export { isMeetingInWorkHours };
+  export { isMeetingInWorkHours };  
