@@ -20,6 +20,5 @@ export function generatePhotoData() {
 
     photos.push(photo);
   }
-
   return photos;
 }

@@ -32,4 +32,3 @@ export function generateComment(id) {
     message: messages.join(' '),
     name: getRandomElement(commenterNames),
   };
-}

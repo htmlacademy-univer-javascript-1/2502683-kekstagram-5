@@ -19,4 +19,5 @@ function parseTime(time) {
   console.log(isMeetingInWorkHours('14:00', '17:30', '08:0', 90));  // false
   console.log(isMeetingInWorkHours('8:00', '17:30', '08:00', 900)); // false
   
+  export { isMeetingInWorkHours };
   export { isMeetingInWorkHours };  
