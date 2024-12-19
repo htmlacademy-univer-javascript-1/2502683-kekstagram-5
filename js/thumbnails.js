@@ -3,6 +3,8 @@ import { openFullscreen } from './fullscreen.js';
 const renderThumbnails = (photos) => {
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesContainer = document.querySelector('.pictures');
+  picturesContainer.innerHTML = '';
+
   const fragment = document.createDocumentFragment();
 
   photos.forEach((photo) => {
