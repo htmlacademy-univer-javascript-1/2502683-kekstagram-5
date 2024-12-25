@@ -1,7 +1,6 @@
-import { generatePhotoData } from './photos.js';
-import { renderThumbnails } from './thumbnails.js';
-import './form.js';
 import { fetchPhotos } from './api.js';
+import { renderThumbnails } from './thumbnails.js';
+import { showFilters, setFilterListeners } from './filters.js';
 
 const showErrorMessage = (message, duration = 5000) => {
   const errorContainer = document.createElement('div');
@@ -25,11 +24,13 @@ const showErrorMessage = (message, duration = 5000) => {
 };
 
 fetchPhotos()
-  .then(renderThumbnails)
+  .then((photos) => {
+    renderThumbnails(photos);
+    showFilters();
+    setFilterListeners(photos);
+  })
   .catch(() => {
-    showErrorMessage('Не удалось загрузить фотографии. Используем тестовые данные.');
-    const photoData = generatePhotoData();
-    renderThumbnails(photoData);
+    showErrorMessage('Не удалось загрузить фотографии. Попробуйте обновить страницу.');
   });
 
-renderThumbnails(photoData);
+//module12-task1
