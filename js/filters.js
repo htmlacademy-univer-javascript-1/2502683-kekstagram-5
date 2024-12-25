@@ -51,4 +51,6 @@ const setFilterListeners = (photos) => {
   });
 };
 
+
+export { showFilters, setFilterListeners };
 export { showFilters, setFilterListeners };
