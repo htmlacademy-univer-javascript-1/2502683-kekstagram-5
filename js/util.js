@@ -1,16 +1,21 @@
-export function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const TIMEOUT_DELAY = 500;
 
-export function getRandomElement(arr) {
-  return arr[getRandomInt(0, arr.length - 1)];
-}
+const getRandomInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-export function debounce(callback, timeoutDelay = 500) {
+  return Math.floor(result);
+};
+
+const getRandomElement = (items) => items[getRandomInteger(0, items.length - 1)];
+
+const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
-
-  return (...args) => {
+  return (...rest) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, args), timeoutDelay);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
+
+export { getRandomElement, getRandomInteger, debounce };
