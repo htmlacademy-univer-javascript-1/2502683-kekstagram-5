@@ -1,22 +1,47 @@
-import { sendPhoto } from './api.js';
+import { sendData } from './api.js';
 import { resetEffects } from './effects.js';
+import { showSuccessMessage, showErrorMessage } from './messages.js';
 
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
-const fileInput = document.querySelector('.img-upload__input');
-const previewImage = document.querySelector('.img-upload__preview img');
-const effectsPreviews = document.querySelectorAll('.effects__preview');
-const closeButton = document.querySelector('.img-upload__cancel');
-const submitButton = document.querySelector('.img-upload__submit');
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const MAX_DESCRIPTION_LENGTH = 140;
+const MAX_HASHTAGS = 5;
+
+const form = document.querySelector('.img-upload__form');
+const fileInput = document.querySelector('.img-upload__input');
+const previewImage = document.querySelector('.img-upload__preview img');
+const overlay = document.querySelector('.img-upload__overlay');
+const closeButton = document.querySelector('.img-upload__cancel');
+const submitButton = document.querySelector('.img-upload__submit');
+const hashtagsInput = document.querySelector('.text__hashtags');
+const descriptionInput = document.querySelector('.text__description');
+
+const pristine = new Pristine(form, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+});
+
+const isValidHashtag = (tag) => /^#[a-zа-яё0-9]{1,19}$/i.test(tag);
+
+const validateHashtags = (value) => {
+  const hashtags = value.trim().split(/\s+/).filter(Boolean);
+  if (hashtags.length > MAX_HASHTAGS) {
+    return false;
+  }
+  return hashtags.every(isValidHashtag);
+};
+
+pristine.addValidator(hashtagsInput, validateHashtags, 'Неверный формат хэштега');
+
+const validateDescription = (value) => value.length <= MAX_DESCRIPTION_LENGTH;
+
+pristine.addValidator(descriptionInput, validateDescription, 'Превышена длина описания');
 
 const resetForm = () => {
   form.reset();
   resetEffects();
   previewImage.src = 'img/upload-default-image.jpg';
+  pristine.reset();
 };
 
 fileInput.addEventListener('change', () => {
@@ -30,10 +55,6 @@ fileInput.addEventListener('change', () => {
 
     reader.addEventListener('load', () => {
       previewImage.src = reader.result;
-
-      effectsPreviews.forEach((preview) => {
-        preview.style.backgroundImage = `url(${reader.result})`;
-      });
     });
 
     reader.readAsDataURL(file);
@@ -48,48 +69,19 @@ closeButton.addEventListener('click', () => {
   resetForm();
 });
 
-const showMessage = (template) => {
-  const message = template.cloneNode(true);
-  document.body.appendChild(message);
-
-  const removeMessage = () => {
-    message.remove();
-    document.removeEventListener('keydown', onEscPress);
-    document.removeEventListener('click', onOutsideClick);
-  };
-
-  const onEscPress = (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      removeMessage();
-    }
-  };
-
-  const onOutsideClick = (evt) => {
-    if (evt.target === message) {
-      removeMessage();
-    }
-  };
-
-  message.querySelector('button').addEventListener('click', removeMessage);
-  document.addEventListener('keydown', onEscPress);
-  document.addEventListener('click', onOutsideClick);
-};
-
 form.addEventListener('submit', async (evt) => {
   evt.preventDefault();
-  submitButton.disabled = true;
+  if (!pristine.validate()) return;
 
+  submitButton.disabled = true;
   const formData = new FormData(form);
 
   try {
-    await sendPhoto(formData);
-    showMessage(successTemplate);
+    await sendData(formData);
     resetForm();
-    overlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+    showSuccessMessage();
   } catch {
-    showMessage(errorTemplate);
+    showErrorMessage();
   } finally {
     submitButton.disabled = false;
   }

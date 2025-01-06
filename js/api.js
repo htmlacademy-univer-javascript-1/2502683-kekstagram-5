@@ -1,41 +1,38 @@
 const BASE_URL = 'https://29.javascript.htmlacademy.pro/kekstagram';
 
-/**
- * Функция для получения данных с сервера
- * @returns {Promise<Array>} Массив данных с сервера
- */
-const fetchPhotos = async () => {
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+
+const ErrorText = {
+  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
+  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
+};
+
+const load = async (route, errorText, method = Method.GET, body = null) => {
   try {
-    const response = await fetch(`${BASE_URL}/data`);
+    const response = await fetch(`${BASE_URL}${route}`, {method, body});
     if (!response.ok) {
-      throw new Error(`Ошибка загрузки данных: ${response.status}`);
+      throw new Error();
     }
     return await response.json();
   } catch (error) {
-    console.error(error.message);
-    throw error;
+    const errorElement = document.createElement('div');
+    errorElement.classList.add('data-error');
+    errorElement.textContent = errorText;
+    document.body.append(errorElement);
+    throw new Error(errorText);
   }
 };
 
-/**
- * Функция для отправки данных на сервер
- * @param {FormData} formData Данные формы
- * @returns {Promise<Response>} Ответ сервера
- */
-const sendPhoto = async (formData) => {
-  try {
-    const response = await fetch(BASE_URL, {
-      method: 'POST',
-      body: formData,
-    });
-    if (!response.ok) {
-      throw new Error(`Ошибка отправки данных: ${response.status}`);
-    }
-    return response;
-  } catch (error) {
-    console.error(error.message);
-    throw error;
-  }
-};
+const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
-export { fetchPhotos, sendPhoto };
+const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
+
+export {getData, sendData};

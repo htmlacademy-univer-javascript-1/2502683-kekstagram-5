@@ -1,24 +1,18 @@
-import { getRandomInt } from './util.js';
-import { generateComment } from './comments.js';
+import { getPhotos } from './data.js';
+import { renderThumbnails } from './render.js';
+import { init } from './filters.js';
 
-export function generatePhotoData() {
-  const photos = [];
-
-  for (let i = 1; i <= 25; i++) {
-    const photo = {
-      id: i,
-      url: `photos/${i}.jpg`,
-      description: `Описание фотографии номер ${i}.`,
-      likes: getRandomInt(15, 200),
-      comments: [],
-    };
-
-    const commentCount = getRandomInt(0, 30);
-    for (let j = 1; j <= commentCount; j++) {
-      photo.comments.push(generateComment(j));
-    }
-
-    photos.push(photo);
+const loadPhotos = async () => {
+  try {
+    const photos = await getPhotos();
+    renderThumbnails(photos);
+    init(photos, renderThumbnails);
+  } catch (error) {
+    const errorElement = document.createElement('div');
+    errorElement.classList.add('data-error');
+    errorElement.textContent = 'Ошибка загрузки данных. Попробуйте обновить страницу.';
+    document.body.append(errorElement);
   }
-  return photos;
-}
+};
+
+export { loadPhotos };
