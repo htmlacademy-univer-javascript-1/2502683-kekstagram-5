@@ -82,6 +82,8 @@ form.addEventListener('submit', async (evt) => {
     await sendData(formData);
     resetForm();
     showSuccessMessage();
+    overlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
   } catch {
     showErrorMessage();
   } finally {
