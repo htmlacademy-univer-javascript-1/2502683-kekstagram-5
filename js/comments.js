@@ -48,15 +48,26 @@ const clearComments = () => {
   commentsShown = 0;
 };
 
+const updateCommentCount = () => {
+  commentsCounter.textContent = `${commentsShown} из ${comments.length} комментариев`;
+};
+
 const loadComments = (data) => {
   comments = data;
+  commentsShown = 0;
   clearComments();
-  renderComments();
+  appendComments(comments.slice(0, COMMENTS_PER_PAGE)); 
+  updateCommentCount();
 };
 
 commentsLoader.addEventListener('click', () => {
   const nextComments = comments.slice(commentsShown, commentsShown + COMMENTS_PER_PAGE);
   appendComments(nextComments);
+  updateCommentCount();
+
+  if (commentsShown >= comments.length) {
+    commentsLoader.classList.add('hidden');
+  }
 });
 
 export { loadComments, clearComments, appendComments };

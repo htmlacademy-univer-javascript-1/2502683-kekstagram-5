@@ -60,14 +60,19 @@ const openBigPicture = (data) => {
   document.body.classList.add('modal-open');
 
   pictureImage.src = data.url;
-  pictureLikesCount.textContent = data.likes;
-  commentsCount.textContent = data.comments.length;
-  pictureCaption.textContent = data.description;
+  pictureLikesCount.textContent = data.likes || 0;
+  pictureCaption.textContent = data.description || 'Нет описания';
 
-  commentsRender.currentComments = data.comments;
+  commentsRender.currentComments = data.comments || [];
   commentsRender.commentsShown = 0;
   commentsList.innerHTML = '';
-  loadMoreComments();
+  appendComments(commentsRender.currentComments.slice(0, COMMENTS_PER_PAGE));
+  updateCommentCount();
+
+  commentsLoader.classList.remove('hidden');
+  if (commentsRender.commentsShown >= commentsRender.currentComments.length) {
+    commentsLoader.classList.add('hidden');
+  }
 
   pictureCloseButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);

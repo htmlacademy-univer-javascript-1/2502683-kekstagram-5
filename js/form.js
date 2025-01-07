@@ -55,6 +55,7 @@ fileInput.addEventListener('change', () => {
 
     reader.addEventListener('load', () => {
       previewImage.src = reader.result;
+      resetScale();
     });
 
     reader.readAsDataURL(file);
