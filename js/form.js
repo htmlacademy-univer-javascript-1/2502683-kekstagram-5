@@ -1,6 +1,7 @@
 import { sendData } from './api.js';
 import { resetEffects } from './effects.js';
 import { showSuccessMessage, showErrorMessage } from './messages.js';
+import { resetScale } from './scale.js'
 
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
