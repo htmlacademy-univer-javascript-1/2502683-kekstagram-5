@@ -1,4 +1,5 @@
 import { appendComments } from './comments.js';
+import { isEscapeKey } from './util.js';
 
 const COMMENTS_PER_PAGE = 5;
 const pictureContainer = document.querySelector('.big-picture');
@@ -6,9 +7,7 @@ const pictureImage = document.querySelector('.big-picture__img img');
 const pictureCaption = document.querySelector('.social__caption');
 const pictureLikesCount = document.querySelector('.likes-count');
 const pictureCloseButton = document.querySelector('.big-picture__cancel');
-
 const commentsContainer = document.querySelector('.social__comment-count');
-const commentsCount = document.querySelector('.social__comment-total-count');
 const commentsList = document.querySelector('.social__comments');
 const commentsLoader = document.querySelector('.comments-loader');
 
@@ -17,13 +16,11 @@ const commentsRender = {
   commentsShown: 0,
 };
 
-const onCloseButtonClick = () => {
-  closeBigPicture();
-};
+let onDocumentKeydown;
 
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape' && !evt.target.closest('.social__footer-text')) {
-    closeBigPicture();
+const handleKeydownAndClose = (evt, closeCallback, additionalCheck) => {
+  if (isEscapeKey(evt) && (!additionalCheck || !evt.target.closest(additionalCheck))) {
+    closeCallback();
   }
 };
 
@@ -50,7 +47,7 @@ const loadMoreComments = () => {
 const closeBigPicture = () => {
   pictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  pictureCloseButton.removeEventListener('click', onCloseButtonClick);
+  pictureCloseButton.removeEventListener('click', closeBigPicture);
   document.removeEventListener('keydown', onDocumentKeydown);
   commentsLoader.removeEventListener('click', loadMoreComments);
 };
@@ -66,17 +63,17 @@ const openBigPicture = (data) => {
   commentsRender.currentComments = data.comments || [];
   commentsRender.commentsShown = 0;
   commentsList.innerHTML = '';
+
   appendComments(commentsRender.currentComments.slice(0, COMMENTS_PER_PAGE));
+  commentsRender.commentsShown = Math.min(COMMENTS_PER_PAGE, commentsRender.currentComments.length);
   updateCommentCount();
 
-  commentsLoader.classList.remove('hidden');
-  if (commentsRender.commentsShown >= commentsRender.currentComments.length) {
-    commentsLoader.classList.add('hidden');
-  }
+  commentsLoader.classList.toggle('hidden', commentsRender.commentsShown >= commentsRender.currentComments.length);
 
-  pictureCloseButton.addEventListener('click', onCloseButtonClick);
+  pictureCloseButton.addEventListener('click', () => closeBigPicture());
+  onDocumentKeydown = (evt) => handleKeydownAndClose(evt, closeBigPicture);
   document.addEventListener('keydown', onDocumentKeydown);
   commentsLoader.addEventListener('click', loadMoreComments);
 };
 
-export { openBigPicture };
+export { openBigPicture, updateCommentCount, loadMoreComments, commentsRender };

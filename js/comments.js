@@ -1,7 +1,11 @@
 const COMMENTS_PER_PAGE = 5;
-const commentsList = document.querySelector('.social__comments');
-const commentsLoader = document.querySelector('.comments-loader');
-const commentsCounter = document.querySelector('.social__comment-count');
+const elements = {
+  commentsList: document.querySelector('.social__comments'),
+  commentsLoader: document.querySelector('.comments-loader'),
+  commentsCounter: document.querySelector('.social__comment-count'),
+};
+
+const { commentsList, commentsLoader, commentsCounter } = elements;
 
 let comments = [];
 let commentsShown = 0;
@@ -48,26 +52,16 @@ const clearComments = () => {
   commentsShown = 0;
 };
 
-const updateCommentCount = () => {
-  commentsCounter.textContent = `${commentsShown} из ${comments.length} комментариев`;
-};
-
 const loadComments = (data) => {
   comments = data;
   commentsShown = 0;
   clearComments();
-  appendComments(comments.slice(0, COMMENTS_PER_PAGE)); 
-  updateCommentCount();
+  appendComments(comments.slice(0, COMMENTS_PER_PAGE));
 };
 
 commentsLoader.addEventListener('click', () => {
   const nextComments = comments.slice(commentsShown, commentsShown + COMMENTS_PER_PAGE);
   appendComments(nextComments);
-  updateCommentCount();
-
-  if (commentsShown >= comments.length) {
-    commentsLoader.classList.add('hidden');
-  }
 });
 
 export { loadComments, clearComments, appendComments };

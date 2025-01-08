@@ -1,6 +1,6 @@
 import { openBigPicture } from './fullscreen.js';
 
-const createThumbnail = ({ url, description, likes, comments, id }) => {
+const createThumbnail = ({ url, description, likes, comments }) => {
   const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const thumbnail = thumbnailTemplate.cloneNode(true);
 

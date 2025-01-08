@@ -1,8 +1,5 @@
 import '../vendor/nouislider/nouislider.js';
 
-
-const DEFAULT_EFFECT = 'none';
-
 const EffectSetups = {
   none: { filter: '', min: 0, max: 100, step: 1, unit: '' },
   chrome: { filter: 'grayscale', min: 0, max: 1, step: 0.1, unit: '' },
@@ -12,11 +9,15 @@ const EffectSetups = {
   heat: { filter: 'brightness', min: 1, max: 3, step: 0.1, unit: '' },
 };
 
-const previewImage = document.querySelector('.img-upload__preview img');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectContainer = document.querySelector('.img-upload__effect-level');
-const effectRadios = document.querySelectorAll('.effects__radio');
+const elements = {
+  previewImage: document.querySelector('.img-upload__preview img'),
+  effectLevelSlider: document.querySelector('.effect-level__slider'),
+  effectLevelValue: document.querySelector('.effect-level__value'),
+  effectContainer: document.querySelector('.img-upload__effect-level'),
+  effectRadios: document.querySelectorAll('.effects__radio'),
+};
+
+const { previewImage, effectLevelSlider, effectLevelValue, effectContainer, effectRadios } = elements;
 
 let chosenEffect = EffectSetups.none;
 
