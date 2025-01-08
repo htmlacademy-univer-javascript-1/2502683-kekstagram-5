@@ -2,7 +2,6 @@ import { openBigPicture } from './fullscreen.js';
 import { getData } from './api.js';
 import { init } from './filters.js';
 
-
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -15,11 +14,17 @@ const createThumbnail = ({ url, description, likes, comments, id }) => {
   thumbnail.querySelector('.picture__img').alt = description;
   thumbnail.querySelector('.picture__likes').textContent = likes;
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
-  thumbnail.dataset.thumbnailId = id;
 
   thumbnail.addEventListener('click', (evt) => {
     evt.preventDefault();
     openBigPicture({ url, description, likes, comments, id });
+  });
+
+  thumbnail.querySelector('.picture__likes').addEventListener('click', (evt) => {
+    evt.stopPropagation();
+    const likesElement = evt.target;
+    const currentLikes = parseInt(likesElement.textContent, 10);
+    likesElement.textContent = currentLikes + 1;
   });
 
   return thumbnail;

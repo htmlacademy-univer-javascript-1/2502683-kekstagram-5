@@ -1,7 +1,11 @@
 const COMMENTS_PER_PAGE = 5;
-const commentsList = document.querySelector('.social__comments');
-const commentsLoader = document.querySelector('.comments-loader');
-const commentsCounter = document.querySelector('.social__comment-count');
+const elements = {
+  commentsList: document.querySelector('.social__comments'),
+  commentsLoader: document.querySelector('.comments-loader'),
+  commentsCounter: document.querySelector('.social__comment-count'),
+};
+
+const { commentsList, commentsLoader, commentsCounter } = elements;
 
 let comments = [];
 let commentsShown = 0;
@@ -50,8 +54,9 @@ const clearComments = () => {
 
 const loadComments = (data) => {
   comments = data;
+  commentsShown = 0;
   clearComments();
-  renderComments();
+  appendComments(comments.slice(0, COMMENTS_PER_PAGE));
 };
 
 commentsLoader.addEventListener('click', () => {
